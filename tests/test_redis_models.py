@@ -28,6 +28,6 @@ class TestRedisExt(TestCase):
         with mock.patch.object(TestList, '_method') as _mocked_method,\
                 mock.patch('redis.StrictRedis.llen') as _redis_mocked:
             TestList.method('1', '2')
-            self.assertEqual(_mocked_method.call_args[0], ('testlist', '1', '2'))
+            self.assertEqual(_mocked_method.call_args, mock.call('testlist', '1', '2'))
             TestList.llen()
-            self.assertEqual(_redis_mocked.call_args[0], ('testlist', ))
+            self.assertEqual(_redis_mocked.call_args, mock.call('testlist', ))
