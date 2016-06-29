@@ -3,33 +3,44 @@ from functools import wraps
 
 def wrapped_redisext_method(name):
     def wrapper(cls, *args):
-        if hasattr(cls, 'KEY'):
-            args = list(args)
-            args.insert(0, getattr(cls, 'KEY'))
-            args = tuple(args)
         _redis = cls._redis()
         return getattr(_redis, name)(*args)
-    return classmethod(wrapper)
+    return wrapper
 
 
 class RedisKeyHandler(type):
 
     def __new__(cls, name, bases, attrs):
 
-        for command in attrs.get('allowed_commands', ()):
+        allowed_commands = []
+        for base in bases:
+            if not hasattr(base, 'allowed_commands'):
+                continue
+            allowed_commands.extend(base.allowed_commands)
+
+        for command in allowed_commands:
             if command in attrs:
                 continue
             attrs[command] = wrapped_redisext_method(command)
+            if not attrs.get('KEY'):
+                attrs[command] = classmethod(attrs[command])
+
         if attrs.get('KEY'):
+            key = attrs['KEY']
+
             def wrapped_method(func):
                 @wraps(func)
                 def wrapper(cls, *args):
-                    return func(cls, attrs.get('KEY'), *args)
+                    return func(cls, key, *args)
                 return classmethod(wrapper)
             for attrname, attrvalue in attrs.items():
-                if attrname.startswith('_'):
-                    continue
-                if not hasattr(attrvalue, '__call__'):
+                if attrname not in allowed_commands:
                     continue
                 attrs[attrname] = wrapped_method(attrvalue)
+            if 'delete_key' not in attrs:
+                attrs['delete_key'] = wrapped_redisext_method('delete')
+                attrs['delete_key'] = wrapped_method(attrs['delete_key'])
+        else:
+            if 'delete_key' not in attrs:
+                attrs['delete_key'] = wrapped_redisext_method('delete')
         return super(RedisKeyHandler, cls).__new__(cls, name, bases, attrs)
