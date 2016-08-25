@@ -1,3 +1,5 @@
+from __future__ import absolute_import  # NOQA
+
 import mock
 from unittest import TestCase
 

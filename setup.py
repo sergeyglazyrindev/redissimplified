@@ -18,6 +18,7 @@ setup(
     classifiers=[
         'Development Status :: 0.1 - Alpha',
         'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Topic :: NoSQL',
     ],

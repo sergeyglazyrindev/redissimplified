@@ -1,7 +1,8 @@
 from ._metaclass import RedisKeyHandler
+from future.utils import with_metaclass
 
 
-class Key(object, metaclass=RedisKeyHandler):
+class Key(with_metaclass(RedisKeyHandler, object)):
 
     allowed_commands = ('exists', 'expire', 'expireat', 'pexpire', 'ttl', 'pttl')
 
