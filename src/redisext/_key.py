@@ -7,5 +7,6 @@ class Key(with_metaclass(RedisKeyHandler, object)):
     allowed_commands = ('exists', 'expire', 'expireat', 'pexpire',
                         'ttl', 'pttl', 'setnx')
 
+    @classmethod
     def delete(cls, key):
         return cls._redis().delete(key)
