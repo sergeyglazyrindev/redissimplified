@@ -43,4 +43,5 @@ class RedisKeyHandler(type):
         else:
             if 'delete_key' not in attrs:
                 attrs['delete_key'] = wrapped_redisext_method('delete')
+                attrs['delete_key'] = wrapped_method(attrs['delete_key'])
         return super(RedisKeyHandler, cls).__new__(cls, name, bases, attrs)
