@@ -4,7 +4,8 @@ from future.utils import with_metaclass
 
 class Set(with_metaclass(RedisKeyHandler, object)):
 
-    allowed_commands = ('sadd', 'scard', 'sismember', 'smembers', 'spop', 'srandmember', 'srem')
+    allowed_commands = ('sadd', 'scard', 'sismember', 'smembers', 'spop',
+                        'srandmember', 'srem', 'sdiffstore')
 
 
 class SortedSet(with_metaclass(RedisKeyHandler, object)):
