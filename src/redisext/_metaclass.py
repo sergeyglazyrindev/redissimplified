@@ -2,9 +2,9 @@ from functools import wraps
 
 
 def wrapped_redisext_method(name):
-    def wrapper(cls, *args):
+    def wrapper(cls, *args, **kwargs):
         _redis = cls._redis()
-        return getattr(_redis, name)(*args)
+        return getattr(_redis, name)(*args, **kwargs)
     return wrapper
 
 
@@ -30,8 +30,8 @@ class RedisKeyHandler(type):
 
             def wrapped_method(func):
                 @wraps(func)
-                def wrapper(cls, *args):
-                    return func(cls, key, *args)
+                def wrapper(cls, *args, **kwargs):
+                    return func(cls, key, *args, **kwargs)
                 return classmethod(wrapper)
             for attrname, attrvalue in attrs.items():
                 if attrname not in allowed_commands:
