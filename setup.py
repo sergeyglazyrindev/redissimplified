@@ -34,5 +34,5 @@ setup(
         'testing': ['nose', 'mock'],
     },
     test_suite='tests',
-    install_requires=['redis==2.10.5', ]
+    install_requires=['redis==2.10.5', 'future==0.16.0']
 )
