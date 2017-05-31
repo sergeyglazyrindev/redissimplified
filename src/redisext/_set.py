@@ -11,4 +11,4 @@ class Set(with_metaclass(RedisKeyHandler, object)):
 class SortedSet(with_metaclass(RedisKeyHandler, object)):
 
     allowed_commands = ('zadd', 'zcard', 'zcount', 'zincrby', 'zrem', 'zrangebyscore', 'zremrangebyscore',
-                        'zrevrangebyscore', 'zscore')
+                        'zrevrangebyscore', 'zscore', 'zrevrange')
